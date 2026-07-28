@@ -7,7 +7,7 @@ from .utils.input import Keys
 dt = 0.0
 FPS = 60
 
-bg_color = (0, 0, 0)
+bg_color = "green"
 
 async def Title_Screen(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
     

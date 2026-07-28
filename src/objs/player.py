@@ -13,7 +13,7 @@ class Player:
         self.vel = Vector2D(0.0, 0.0)
         self.manager = AnimationManager({})
         self.speed = 20.0
-        self.jumpForce = gravity*2.0
+        self.jumpForce = gravity*1.0
         self.gravity = gravity
         self.dir = 1
     def load_assets(self):
@@ -26,8 +26,8 @@ class Player:
         # defining animations
         Assets.new_animation("player_idle_left", Assets.get_image("p_idle_left"))
         Assets.new_animation("player_idle_right", Assets.get_image("p_idle_right"))
-        Assets.new_animation("player_walk_left", Assets.get_image("p_walk_left"))
-        Assets.new_animation("player_walk_right", Assets.get_image("p_walk_right"))
+        Assets.new_animation("player_walk_left", Assets.get_image("p_walk_left"), fps=5)
+        Assets.new_animation("player_walk_right", Assets.get_image("p_walk_right"), fps=5)
 
         # defining animation manager
         self.manager.new_anim("idle_left", Assets.get_animation("player_idle_left"))
