@@ -4,6 +4,8 @@ import json
 from ..utils.input import Keys
 from ..utils.math.vector import Vector2D
 
+DETAIL = 3
+
 class _tiles:
     def __init__(self, size):
         self.size = size
@@ -88,6 +90,19 @@ class Collisions:
         elif Keys.is_pressed(Keys.down, events): 
             num = max(1, min(num-1, 5))
         self.cur_tile = self._tiles.get_tile(num)
+
+    def get_tiles_around(self, pos:Vector2D):
+        x = (pos.x//self.size)*self.size
+        y = (pos.y//self.size)*self.size
+        around = []
+        for i in range(-DETAIL, DETAIL):
+            _y=y+(i*self.size)
+            for j in range(-DETAIL, DETAIL):
+                _x=x+(j*self.size)
+                if (_x, _y) in self.tiles: around.append(self.tiles[_x, _y])
+
+        return around
+        
 
 
     def render(self, screen:pygame.Surface, cam:Vector2D):

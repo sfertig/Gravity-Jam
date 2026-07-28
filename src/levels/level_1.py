@@ -12,12 +12,11 @@ dt = 0.0
 FPS = 60
 
 bg_color = "blue"
+coll = Collisions(16, "data/level_1_collisions.json", False)
 
-player = Player(0, 100, 00.0)
+player = Player(0, 100, 80.0, coll)
 
 cam = Vector2D(0, 0)
-
-coll = Collisions(16, "data/level_1_collisions.json", False)
 
 def load_assets():
     player.load_assets()

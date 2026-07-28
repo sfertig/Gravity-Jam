@@ -4,11 +4,17 @@ from ..utils.assets import Assets
 from ..utils.math.vector import Vector2D
 from ..utils.animation import AnimationManager
 from ..utils.input import Keys
+from .collisions import Collisions
 
 IMP = "images/player.png"
 
+#collisions
+
+on_wall = False
+on_floor = False
+
 class Player:
-    def __init__(self, x, y, gravity):
+    def __init__(self, x, y, gravity, collisions: Collisions):
         self.pos = Vector2D(x, y)
         self.vel = Vector2D(0.0, 0.0)
         self.manager = AnimationManager({})
@@ -16,6 +22,7 @@ class Player:
         self.jumpForce = gravity*1.0
         self.gravity = gravity
         self.dir = 1
+        self.coll = collisions
     def load_assets(self):
         # define images (swapped left/right rects)
         Assets.new_image("p_idle_left", IMP, pygame.Rect(32, 0, 32, 16))
@@ -38,20 +45,51 @@ class Player:
         # set initial animation
         self.manager.change_anim("idle_left")
 
+    def rect(self):
+        return pygame.Rect((self.pos.x, self.pos.y), self.manager.get_image().get_size())
+
     def update(self, dt, events):
         self.manager.update(dt)
         #update position
         self.input(events, dt)
-        self.pos += (self.vel * dt)
-        #TODO: collision
+
+        rects = self.coll.get_tiles_around(self.pos)
+        on_wall = False
+        on_floor = False
+
+        #x collisions
+        self.pos.x += self.vel.x * dt
+        for rect in rects:
+            if self.rect().colliderect(rect):
+                if self.vel.x > 0: #right
+                    self.pos.x -= self.vel.x * dt
+                    self.vel.x = 0
+                    on_wall = True
+                elif self.vel.x < 0: #left
+                    self.pos.x -= self.vel.x * dt
+                    self.vel.x = 0
+                    on_wall = True
+        #y collisions
+        self.pos.y += self.vel.y * dt
+        for rect in rects:
+            if self.rect().colliderect(rect):
+                if self.vel.y > 0: #down
+                    self.pos.y -= self.vel.y * dt
+                    self.vel.y = 0
+                    on_floor = True
+                elif self.vel.y < 0: #up
+                    self.vel.y = 0
+                    self.pos.y -= self.vel.y * dt
 
     def render(self, screen: pygame.Surface):
         #debut testing
+        pygame.draw.rect(screen, "red", self.rect(), 1)
         screen.blit(self.manager.get_image(), self.pos.to_int())
 
     def input(self, events, dt):
         #gravity
-        self.vel.y += self.gravity*dt
+        if not on_floor: self.vel.y += self.gravity*dt
+        print(self.vel.y)
         #jump
         if Keys.is_pressed([Keys.space, Keys.up, Keys.w], events):
             self.vel.y = -self.jumpForce
