@@ -1,23 +1,21 @@
 import asyncio
 import pygame
 
-from .exit_codes import *
-from .utils.input import Keys
+from ..exit_codes import *
+from ..utils.input import Keys
 
 dt = 0.0
 FPS = 60
 
-bg_color = (0, 0, 0)
+bg_color = "blue"
 
-async def Title_Screen(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
-    
+async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
     while True:
         events = pygame.event.get().copy()
         for event in events:
             if event.type == pygame.QUIT: return SHUT_DOWN
 
-        if Keys.is_pressed(Keys.escape, events): return SHUT_DOWN
-        if Keys.is_pressed(Keys.enter, events): return LEVEL_1
+        if Keys.is_pressed(Keys.escape, events): return TITLE_SCREEN
 
         dt = clock.tick(FPS)//1000
         update(dt)

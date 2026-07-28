@@ -4,6 +4,7 @@ import sys
 
 from src.exit_codes import *
 from src.title_screen import Title_Screen
+from src.levels.level_1 import Level_1
 
 pygame.init()
 
@@ -27,9 +28,9 @@ async def main():
     
     state = TITLE_SCREEN
     while True:
-        if state == TITLE_SCREEN:
-            state = await Title_Screen(screen, clock)
+        if state == TITLE_SCREEN: state = await Title_Screen(screen, clock)
         elif state == SHUT_DOWN: break
+        elif state == LEVEL_1: state = await Level_1(screen, clock)
     pygame.quit()
 
 asyncio.run(main())
