@@ -1,15 +1,26 @@
 import asyncio
 import pygame
+import sys
 
 from src.exit_codes import *
 from src.title_screen import Title_Screen
 
 pygame.init()
 
+# Check if running in WebAssembly (Browser)
+IS_WEB = sys.platform == "emscripten"
+
 async def main():
 
     width, height = 640, 360
-    screen = pygame.display.set_mode((width, height), pygame.SCALED | pygame.FULLSCREEN)
+    if IS_WEB:
+        # Web build: rely on SCALED (pygbag handles window fit)
+        screen = pygame.display.set_mode((width, height))
+    else:
+        # Desktop build: full experience with SCALED + FULLSCREEN
+        screen = pygame.display.set_mode(
+            (width, height), pygame.SCALED | pygame.FULLSCREEN
+        )
     pygame.display.set_caption("test title")
 
     clock = pygame.time.Clock()
