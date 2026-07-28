@@ -1,2 +1,3 @@
 
 SHUT_DOWN = 0
+TITLE_SCREEN = 1
