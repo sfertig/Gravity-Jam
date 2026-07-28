@@ -61,11 +61,12 @@ class _keys:
         #mouse
         self.mouse_x, self.mouse_y = 0, 0
 
-    def is_pressed(self, key, events): 
+    def is_pressed(self, key, events):
+        if type(key) != list: key = [key]
         if events is None: return False
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == key: return True
+                if event.key in key: return True
         return False
 
     def is_held(self, key):

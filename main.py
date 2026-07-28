@@ -26,7 +26,7 @@ async def main():
 
     clock = pygame.time.Clock()
     
-    state = TITLE_SCREEN
+    state = LEVEL_1
     while True:
         if state == TITLE_SCREEN: state = await Title_Screen(screen, clock)
         elif state == SHUT_DOWN: break
