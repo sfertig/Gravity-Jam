@@ -36,10 +36,11 @@ class GravityObj:
         self.gravity = gravity
 
     def rect(self):
-        if not self.falling:
+        return pygame.Rect(self.pos.to_int(), self.image.get_size())
+        """if not self.falling:
             return pygame.Rect(self.pos.to_int(), self.image.get_size())
         else:
-             return pygame.Rect(0, 0, 1, 1)
+             return pygame.Rect(0, 0, 1, 1)"""
 
     def _rect(self):
          return pygame.Rect(self.pos.to_int(), self.image.get_size())

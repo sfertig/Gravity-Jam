@@ -35,7 +35,7 @@ def create_objs():
 
     global balloons
     balloons = [
-        #Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
+        Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
     ]
 
 def load_assets():
