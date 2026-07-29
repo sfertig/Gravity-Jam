@@ -15,7 +15,7 @@ class Player:
         self.vel = Vector2D(0.0, 0.0)
         self.manager = AnimationManager({})
         self.speed = 20.0
-        self.JFM = 0.5
+        self.JFM = 0.7
         self.jumpForce = gravity*self.JFM
         self.gravity = gravity
         self.dir = 1
@@ -53,12 +53,13 @@ class Player:
         self.jumpForce = gravity*self.JFM
         self.manager.flip_v()
 
-    def update(self, dt, events):
+    def update(self, dt, events, otherRects: list[pygame.Rect] = []):
         self.manager.update(dt)
         #update position
         self.input(events, dt)
 
         rects: list[pygame.Rect] = self.coll.get_tiles_around(self.pos)
+        rects.extend(otherRects)
         self.on_wall = False
         self.on_floor = False
 

@@ -105,18 +105,16 @@ class Collisions:
         
 
 
-    def render(self, screen:pygame.Surface, cam:Vector2D):
+    def render(self, screen:pygame.Surface):
         if self.build or not self.active: return
 
         pygame.draw.rect(screen, "red", screen.get_rect().copy(), 1)
 
         for pos, rect in self.tiles.items():
             r = rect.copy()
-            r.x += cam.x
-            r.y += cam.y
             pygame.draw.rect(screen, "yellow", r, 1)
 
         #render current tile
-        self.cur_tile.x = ((pygame.mouse.get_pos()[0] - cam.x)//self.size)*self.size
-        self.cur_tile.y = ((pygame.mouse.get_pos()[1] - cam.y)//self.size)*self.size
+        self.cur_tile.x = ((pygame.mouse.get_pos()[0])//self.size)*self.size
+        self.cur_tile.y = ((pygame.mouse.get_pos()[1])//self.size)*self.size
         pygame.draw.rect(screen, "green", self.cur_tile, 1)
