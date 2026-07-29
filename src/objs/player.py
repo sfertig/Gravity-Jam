@@ -51,6 +51,7 @@ class Player:
     def change_gravity(self, gravity):
         self.gravity = gravity
         self.jumpForce = gravity*self.JFM
+        self.manager.flip_v()
 
     def update(self, dt, events):
         self.manager.update(dt)

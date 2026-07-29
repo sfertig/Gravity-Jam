@@ -20,6 +20,10 @@ class Animation:
         self.index += self.fps * dt
         self.index %= len(self.images)
 
+    def flip_v(self):
+        for i in range(len(self.images)):
+            self.images[i] = pygame.transform.flip(self.images[i], False, True)
+
     def get_image(self):
         return self.images[int(self.index)]
 
@@ -30,6 +34,10 @@ class AnimationManager:
 
     def new_anim(self, name, anim):
         self.animations[name] = anim
+
+    def flip_v(self):
+        for name in self.animations:
+            self.animations[name].flip_v()
 
     def change_anim(self, name):
         self.current_anim = name
