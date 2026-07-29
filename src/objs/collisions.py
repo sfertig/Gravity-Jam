@@ -83,13 +83,13 @@ class Collisions:
         elif pygame.mouse.get_pressed()[2]:
             if (self.cur_tile.x, self.cur_tile.y) in self.tiles: del self.tiles[self.cur_tile.x, self.cur_tile.y]
 
-        #change tile based on scroll wheel
-        num = self._tiles.get_num(self.cur_tile)
-        if Keys.is_pressed(Keys.up, events): 
-            num = max(1, min(num+1, 5))
-        elif Keys.is_pressed(Keys.down, events): 
-            num = max(1, min(num-1, 5))
-        self.cur_tile = self._tiles.get_tile(num)
+        #change tile based on number pressed
+        if Keys.is_pressed(Keys.n1, events): self.cur_tile = self._tiles.full.copy()
+        elif Keys.is_pressed(Keys.n2, events): self.cur_tile = self._tiles.half_top.copy()
+        elif Keys.is_pressed(Keys.n3, events): self.cur_tile = self._tiles.half_bottom.copy()
+        elif Keys.is_pressed(Keys.n4, events): self.cur_tile = self._tiles.half_left.copy()
+        elif Keys.is_pressed(Keys.n5, events): self.cur_tile = self._tiles.half_right.copy()
+        
 
     def get_tiles_around(self, pos:Vector2D):
         x = (pos.x//self.size)*self.size

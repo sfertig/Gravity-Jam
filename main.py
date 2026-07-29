@@ -33,6 +33,5 @@ async def main():
         elif state == SHUT_DOWN: break
         elif state == LEVEL_1: state = await Level_1(screen, clock)
     pygame.quit()
-    os.system('cls') #TODO: remove for web build
 
 asyncio.run(main())

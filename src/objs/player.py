@@ -15,7 +15,8 @@ class Player:
         self.vel = Vector2D(0.0, 0.0)
         self.manager = AnimationManager({})
         self.speed = 20.0
-        self.jumpForce = gravity*1.0
+        self.JFM = 0.5
+        self.jumpForce = gravity*self.JFM
         self.gravity = gravity
         self.dir = 1
         self.coll = collisions
@@ -47,11 +48,14 @@ class Player:
     def rect(self):
         return pygame.Rect((self.pos.x, self.pos.y), self.manager.get_image().get_size())
 
+    def change_gravity(self, gravity):
+        self.gravity = gravity
+        self.jumpForce = gravity*self.JFM
+
     def update(self, dt, events):
         self.manager.update(dt)
         #update position
         self.input(events, dt)
-        print(self.on_floor, self.vel.to_int())
 
         rects: list[pygame.Rect] = self.coll.get_tiles_around(self.pos)
         self.on_wall = False
