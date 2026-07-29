@@ -8,7 +8,7 @@ from ..objs.player import Player
 from ..utils.math.vector import Vector2D
 from ..objs.collisions import Collisions
 
-from ..objs.gravityObj import Box
+from ..objs.gravityObj import Box, Balloon
 
 dt = 0.0
 FPS = 60
@@ -21,6 +21,7 @@ coll = Collisions(16, "data/level_1_collisions.json", False)
 player = Player(0, 100, gravity, coll)
 
 boxes: list[Box] = []
+balloons: list[Balloon] = []
 
 btn_image: pygame.Surface
 btn_image_pos = Vector2D(0, 0)
@@ -28,8 +29,13 @@ btn_image_pos = Vector2D(0, 0)
 def create_objs():
     global boxes
     boxes = [
-        Box(100, 300, gravity, coll, Assets.get_image("box")),
-]
+        #Box(100, 300, gravity, coll, Assets.get_image("box")),
+    ]
+
+    global balloons
+    balloons = [
+        Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
+    ]
 
 def load_assets():
     player.load_assets()
@@ -37,6 +43,7 @@ def load_assets():
     Assets.new_image("btn_down", "images/button_ui_down.png")
     Assets.new_image("btn_up", "images/button_ui_up.png")
     Assets.new_image("box", "images/box.png")
+    Assets.new_image("balloon", "images/balloon.png")
 
 
 
@@ -66,10 +73,13 @@ async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
 def change_gravity():
     global gravity
     global btn_image
+
     gravity *= -1
     player.change_gravity(gravity)
     for box in boxes:
         box.change_gravity(gravity)
+    for balloon in balloons:
+        balloon.change_gravity(gravity)
     if gravity > 0: btn_image = Assets.get_image("btn_down")
     else: btn_image = Assets.get_image("btn_up")
 
@@ -79,6 +89,8 @@ def get_rects():
     rects = []
     for box in boxes:
         rects.append(box.rect())
+    for balloon in balloons:
+        rects.append(balloon.rect())
     return rects
 
 def update(dt:float, events):
@@ -90,6 +102,9 @@ def update(dt:float, events):
     for box in boxes:
         box.update(dt, events)
 
+    for balloon in balloons:
+        balloon.update(dt, events)
+
 def render(screen:pygame.Surface):
     screen.fill(bg_color)
     screen.blit(Assets.get_image("bg"), (0, 0))
@@ -98,6 +113,9 @@ def render(screen:pygame.Surface):
 
     for box in boxes:
         box.render(screen)
+
+    for balloon in balloons:
+        balloon.render(screen)
 
     coll.render(screen)
 
