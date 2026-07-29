@@ -51,3 +51,17 @@ class AnimationManager:
             return
         return self.animations[self.current_anim].get_image()
 
+class Text:
+    def __init__(self, font, text, color, size, x, y):
+        self.font = font
+        self.text = text
+        self.color = color
+        self.size = size
+        self.x = x
+        self.y = y
+
+    def render(self, screen):
+        text = self.font.render(self.text, True, self.color)
+        text_rect = text.get_rect(topleft=(self.x, self.y))
+        screen.blit(text, text_rect)
+

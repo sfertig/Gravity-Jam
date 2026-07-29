@@ -48,7 +48,7 @@ class Player:
         self.manager.change_anim("idle_left")
 
     def rect(self):
-        return pygame.Rect((self.pos.x, self.pos.y), self.manager.get_image().get_size())
+        return pygame.Rect((self.pos.x+2, self.pos.y), (12, 16))
 
     def change_gravity(self, gravity):
         self.gravity = gravity
@@ -96,8 +96,6 @@ class Player:
         return None
 
     def render(self, screen: pygame.Surface):
-        #debut testing
-        pygame.draw.rect(screen, "red", self.rect(), 1)
         screen.blit(self.manager.get_image(), self.pos.to_int())
 
     def input(self, events, dt):

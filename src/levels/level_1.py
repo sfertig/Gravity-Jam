@@ -7,6 +7,7 @@ from ..utils.assets import Assets
 from ..objs.player import Player
 from ..utils.math.vector import Vector2D
 from ..objs.collisions import Collisions
+from ..utils.animation import Text
 
 from ..objs.gravityObj import Box, Balloon
 
@@ -18,39 +19,83 @@ gravity = 130.0
 bg_color = "blue"
 coll = Collisions(16, "data/level_1_collisions.json", False)
 
-player = Player(0, 100, gravity, coll)
+goal = pygame.Rect(592, 16, 32, 32)
+
+player = Player(16, 16, gravity, coll)
 
 boxes: list[Box] = []
 balloons: list[Balloon] = []
 
+text: Text = None
+
 btn_image: pygame.Surface
 btn_image_pos = Vector2D(0, 0)
+
+def reset():
+    global dt
+    global FPS
+    global gravity
+    global bg_color
+    global coll
+    global goal
+    global player
+    global boxes
+    global balloons
+    global text
+    global btn_image
+    global btn_image_pos
+    dt = 0.0
+    FPS = 60
+
+    gravity = 130.0
+
+    bg_color = "blue"
+    coll = Collisions(16, "data/level_1_collisions.json", False)
+
+    goal = pygame.Rect(592, 16, 32, 32)
+
+    player = Player(16, 16, gravity, coll)
+
+    boxes= []
+    balloons = []
+
+    text = None
+
+    btn_image = None
+    btn_image_pos = Vector2D(0, 0)
 
 def create_objs():
     global boxes
     boxes = [
-        Box(100, 100, gravity, coll, Assets.get_image("box")),
-        #Box(100, 200, gravity, coll, Assets.get_image("box")),
     ]
+    for x in range(16, 336, 16):
+        boxes.append(Box(x, 32, gravity, coll, Assets.get_image("box")))
 
     global balloons
     balloons = [
-        Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
+        Balloon(368, 80, gravity, coll, Assets.get_image("balloon")),
     ]
+
+    global text
+    text = Text(Assets.get_font("font"), "Pressing 'c' changes gravity", "white", 12, 16, 0)
 
 def load_assets():
     player.load_assets()
-    Assets.new_image("bg", "images/level_1_bg.png")
+    Assets.new_image("bg", "images/level_1.png")
     Assets.new_image("btn_down", "images/button_ui_down.png")
     Assets.new_image("btn_up", "images/button_ui_up.png")
     Assets.new_image("box", "images/box.png")
     Assets.new_image("balloon", "images/balloon.png")
+    Assets.new_image("death", "images/death_screen.png")
+
+    Assets.new_font("font", "fonts/font.ttf", 20)
 
 
 
 
 async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
     global btn_image
+    reset()
     load_assets()
     create_objs()
     #set btn pos
@@ -61,9 +106,9 @@ async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
     while True:
         events = pygame.event.get().copy()
         for event in events:
-            if event.type == pygame.QUIT: return SHUT_DOWN
+            if event.type == pygame.QUIT: return SHUT_DOWN, TITLE_SCREEN
 
-        if Keys.is_pressed(Keys.escape, events): return SHUT_DOWN   #TITLE_SCREEN
+        if Keys.is_pressed(Keys.escape, events): return SHUT_DOWN, TITLE_SCREEN
 
         dt = clock.tick(FPS)/1000.0
         num = update(dt, events)
@@ -97,8 +142,6 @@ def get_rects():
     return rects
 
 def update(dt:float, events):
-
-    if Keys.is_pressed(Keys.e, events): change_gravity()
     num = player.update(dt, events, get_rects())
     coll.update(events)
 
@@ -108,9 +151,13 @@ def update(dt:float, events):
     for balloon in balloons:
         balloon.update(dt, events)
 
+    if player.rect().colliderect(goal): print("win")
+
+    if Keys.is_pressed(Keys.c, events) and player.on_floor: change_gravity()
     return num
 
 def render(screen:pygame.Surface):
+    global text
     screen.fill(bg_color)
     screen.blit(Assets.get_image("bg"), (0, 0))
     #renders
@@ -123,6 +170,10 @@ def render(screen:pygame.Surface):
         balloon.render(screen)
 
     coll.render(screen)
+
+    text.render(screen)
+
+    pygame.draw.rect(screen, "green", goal, 1)
 
     screen.blit(btn_image, btn_image_pos.to_int())
     #update screen
