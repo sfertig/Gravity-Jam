@@ -7,6 +7,9 @@ from src.exit_codes import *
 from src.utils.assets import Assets
 from src.title_screen import Title_Screen
 from src.death_screen import Death_Screen
+from src.win_screen import Win_Screen
+
+
 from src.levels.level_1 import Level_1
 from src.levels.level_2 import Level_2
 from src.levels.level_3 import Level_3
@@ -37,6 +40,7 @@ async def main():
         if state == TITLE_SCREEN: state = await Title_Screen(screen, clock)
         elif state == SHUT_DOWN: break
         elif state == DEATH_SCREEN: state = await Death_Screen(screen, clock, level)
+        elif state == WIN_SCREEN: state = await Win_Screen(screen, clock)
         elif state == LEVEL_1: 
             state, level = await Level_1(screen, clock)
         elif state == LEVEL_2: 

@@ -149,7 +149,7 @@ def update(dt:float, events):
     for balloon in balloons:
         balloon.update(dt, events)
 
-    if player.rect().colliderect(goal): print("win")
+    if player.rect().colliderect(goal): return WIN_SCREEN
 
     if Keys.is_pressed(Keys.space, events) and player.on_floor: change_gravity()
     return num

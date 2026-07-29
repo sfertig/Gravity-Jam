@@ -3,6 +3,7 @@ import pygame
 
 from .exit_codes import *
 from .utils.input import Keys
+from .utils.assets import Assets
 
 dt = 0.0
 FPS = 60
@@ -10,7 +11,7 @@ FPS = 60
 bg_color = "green"
 
 async def Title_Screen(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
-    
+    Assets.new_image("title", "images/title.png")
     while True:
         events = pygame.event.get().copy()
         for event in events:
@@ -30,6 +31,7 @@ def update(dt:float):
 
 def render(screen:pygame.Surface):
     screen.fill(bg_color)
+    screen.blit(Assets.get_image("title"), (0, 0))
     #renders
 
     #update screen

@@ -70,7 +70,9 @@ async def Death_Screen(screen:pygame.Surface, clock:pygame.time.Clock, level_cod
         await asyncio.sleep(0)
 
 def update(dt:float):
-    pass
+    events = pygame.event.get().copy()
+    for event in events:
+        if event.type == pygame.QUIT: return SHUT_DOWN
 
 def render(screen:pygame.Surface):
     screen.fill(bg_color)
