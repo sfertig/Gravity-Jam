@@ -29,12 +29,13 @@ btn_image_pos = Vector2D(0, 0)
 def create_objs():
     global boxes
     boxes = [
-        #Box(100, 300, gravity, coll, Assets.get_image("box")),
+        Box(100, 100, gravity, coll, Assets.get_image("box")),
+        #Box(100, 200, gravity, coll, Assets.get_image("box")),
     ]
 
     global balloons
     balloons = [
-        Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
+        #Balloon(100, 300, gravity, coll, Assets.get_image("balloon")),
     ]
 
 def load_assets():
@@ -65,8 +66,10 @@ async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
         if Keys.is_pressed(Keys.escape, events): return SHUT_DOWN   #TITLE_SCREEN
 
         dt = clock.tick(FPS)/1000.0
-        update(dt, events)
+        num = update(dt, events)
         render(screen)
+
+        if num != None: return num, LEVEL_1
 
         await asyncio.sleep(0)
 
@@ -96,7 +99,7 @@ def get_rects():
 def update(dt:float, events):
 
     if Keys.is_pressed(Keys.e, events): change_gravity()
-    player.update(dt, events, get_rects())
+    num = player.update(dt, events, get_rects())
     coll.update(events)
 
     for box in boxes:
@@ -104,6 +107,8 @@ def update(dt:float, events):
 
     for balloon in balloons:
         balloon.update(dt, events)
+
+    return num
 
 def render(screen:pygame.Surface):
     screen.fill(bg_color)

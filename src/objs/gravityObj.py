@@ -13,15 +13,15 @@ class GravityObj:
         self.image = image
         self.gravity = gravity
         self.coll = collisions
+        self.falling = False
 
-    def update(self, dt, events, otherRects: list[pygame.Rect] = []):
+    def update(self, dt, events):
         rects: list[pygame.Rect] = self.coll.get_tiles_around(self.pos)
-        rects.extend(otherRects)
         self.vel.y += self.gravity*dt
         #y collisions
         self.pos.y += self.vel.y * dt
         for rect in rects:
-            if self.rect().colliderect(rect):
+            if self._rect().colliderect(rect):
                 self.on_floor = True
                 if self.vel.y > 0: #down
                     self.pos.y -= self.vel.y * dt
@@ -29,12 +29,20 @@ class GravityObj:
                 elif self.vel.y < 0: #up
                     self.vel.y = 0
                     self.pos.y = rect.bottom
+        if self.vel.y != 0: self.falling = True
+        else: self.falling = False
 
     def change_gravity(self, gravity):
         self.gravity = gravity
 
     def rect(self):
-        return pygame.Rect(self.pos.to_int(), self.image.get_size())
+        if not self.falling:
+            return pygame.Rect(self.pos.to_int(), self.image.get_size())
+        else:
+             return pygame.Rect(0, 0, 1, 1)
+
+    def _rect(self):
+         return pygame.Rect(self.pos.to_int(), self.image.get_size())
 
     def render(self, screen: pygame.Surface):
         screen.blit(self.image, self.pos.to_int())
@@ -65,7 +73,7 @@ class Balloon(GravityObj):
             #y collisions
             self.pos.y += self.vel.y * dt
             for rect in rects:
-                if self.rect().colliderect(rect):
+                if self._rect().colliderect(rect):
                     if self.vel.y > 0: #down
                         self.pos.y -= self.vel.y * dt
                         self.vel.y = 0

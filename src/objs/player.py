@@ -1,5 +1,7 @@
 import pygame
 
+from ..exit_codes import *
+
 from ..utils.assets import Assets
 from ..utils.math.vector import Vector2D
 from ..utils.animation import AnimationManager
@@ -53,7 +55,7 @@ class Player:
         self.jumpForce = gravity*self.JFM
         self.manager.flip_v()
 
-    def update(self, dt, events, otherRects: list[pygame.Rect] = []):
+    def update(self, dt, events, otherRects: list[pygame.Rect] = [], boxes: list[pygame.Rect] = [], balloons: list[pygame.Rect] = []):
         self.manager.update(dt)
         #update position
         self.input(events, dt)
@@ -87,6 +89,11 @@ class Player:
                     self.vel.y = 0
                     self.pos.y = rect.bottom
                     self.on_floor = True
+
+        for rect in otherRects:
+            if self.rect().colliderect(rect):
+                return DEATH_SCREEN
+        return None
 
     def render(self, screen: pygame.Surface):
         #debut testing
