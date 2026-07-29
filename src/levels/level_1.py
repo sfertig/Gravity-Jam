@@ -137,12 +137,17 @@ def get_rects():
     rects = []
     for box in boxes:
         rects.append(box.rect())
+    return rects
+
+def balloon_rects():
+    global balloons
+    rects = []
     for balloon in balloons:
         rects.append(balloon.rect())
     return rects
 
 def update(dt:float, events):
-    num = player.update(dt, events, get_rects())
+    num = player.update(dt, events, get_rects(), balloon_rects())
     coll.update(events)
 
     for box in boxes:

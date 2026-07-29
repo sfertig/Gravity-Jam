@@ -55,7 +55,7 @@ class Player:
         self.jumpForce = gravity*self.JFM
         self.manager.flip_v()
 
-    def update(self, dt, events, otherRects: list[pygame.Rect] = [], boxes: list[pygame.Rect] = [], balloons: list[pygame.Rect] = []):
+    def update(self, dt, events, otherRects: list[pygame.Rect] = [], balloons: list[pygame.Rect] = []):
         self.manager.update(dt)
         #update position
         self.input(events, dt)
@@ -91,6 +91,9 @@ class Player:
                     self.on_floor = True
 
         for rect in otherRects:
+            if self.rect().colliderect(rect):
+                return DEATH_SCREEN
+        for rect in balloons:
             if self.rect().colliderect(rect):
                 return DEATH_SCREEN
         return None
