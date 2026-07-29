@@ -8,10 +8,6 @@ from .collisions import Collisions
 
 IMP = "images/player.png"
 
-#collisions
-
-on_wall = False
-on_floor = False
 
 class Player:
     def __init__(self, x, y, gravity, collisions: Collisions):
@@ -23,6 +19,9 @@ class Player:
         self.gravity = gravity
         self.dir = 1
         self.coll = collisions
+
+        self.on_wall = False
+        self.on_floor = False
     def load_assets(self):
         # define images (swapped left/right rects)
         Assets.new_image("p_idle_left", IMP, pygame.Rect(32, 0, 32, 16))
@@ -52,10 +51,11 @@ class Player:
         self.manager.update(dt)
         #update position
         self.input(events, dt)
+        print(self.on_floor, self.vel.to_int())
 
-        rects = self.coll.get_tiles_around(self.pos)
-        on_wall = False
-        on_floor = False
+        rects: list[pygame.Rect] = self.coll.get_tiles_around(self.pos)
+        self.on_wall = False
+        self.on_floor = False
 
         #x collisions
         self.pos.x += self.vel.x * dt
@@ -64,11 +64,11 @@ class Player:
                 if self.vel.x > 0: #right
                     self.pos.x -= self.vel.x * dt
                     self.vel.x = 0
-                    on_wall = True
+                    self.on_wall = True
                 elif self.vel.x < 0: #left
                     self.pos.x -= self.vel.x * dt
                     self.vel.x = 0
-                    on_wall = True
+                    self.on_wall = True
         #y collisions
         self.pos.y += self.vel.y * dt
         for rect in rects:
@@ -76,10 +76,11 @@ class Player:
                 if self.vel.y > 0: #down
                     self.pos.y -= self.vel.y * dt
                     self.vel.y = 0
-                    on_floor = True
+                    self.on_floor = True
                 elif self.vel.y < 0: #up
                     self.vel.y = 0
-                    self.pos.y -= self.vel.y * dt
+                    self.pos.y = rect.bottom
+                    self.on_floor = True
 
     def render(self, screen: pygame.Surface):
         #debut testing
@@ -88,10 +89,10 @@ class Player:
 
     def input(self, events, dt):
         #gravity
-        if not on_floor: self.vel.y += self.gravity*dt
-        print(self.vel.y)
+        #if not on_floor: 
+        self.vel.y += self.gravity*dt
         #jump
-        if Keys.is_pressed([Keys.space, Keys.up, Keys.w], events):
+        if Keys.is_pressed([Keys.space, Keys.up, Keys.w], events) and self.on_floor:
             self.vel.y = -self.jumpForce
         #movement
         dir = 0
