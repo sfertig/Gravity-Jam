@@ -106,7 +106,7 @@ class Player:
         #if not on_floor: 
         self.vel.y += self.gravity*dt
         #jump
-        if Keys.is_pressed([Keys.space, Keys.up, Keys.w], events) and self.on_floor:
+        if Keys.is_pressed([Keys.up, Keys.w], events) and self.on_floor:
             self.vel.y = -self.jumpForce
         #movement
         dir = 0

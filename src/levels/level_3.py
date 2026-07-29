@@ -17,11 +17,11 @@ FPS = 60
 gravity = 130.0
 
 bg_color = "blue"
-coll = Collisions(16, "data/level_2_collisions.json", False)
+coll = Collisions(16, "data/level_3_collisions.json", False)
 
-goal = pygame.Rect(352, 304, 32, 32)
+goal = pygame.Rect(16, 16, 32, 32)
 
-player = Player(16, 16, gravity, coll)
+player = Player(16, 320, gravity, coll)
 
 boxes: list[Box] = []
 balloons: list[Balloon] = []
@@ -48,11 +48,11 @@ def reset():
     gravity = 130.0
 
     bg_color = "blue"
-    coll = Collisions(16, "data/level_2_collisions.json", False)
+    coll = Collisions(16, "data/level_3_collisions.json", False)
 
-    goal = pygame.Rect(352, 304, 32, 32)
+    goal = pygame.Rect(16, 16, 32, 32)
 
-    player = Player(16, 16, gravity, coll)
+    player = Player(16, 320, gravity, coll)
 
     boxes= []
     balloons = []
@@ -66,17 +66,14 @@ def create_objs():
     global boxes
     boxes = [
     ]
-    for x in range(16, 336, 16):
-        boxes.append(Box(x, 32, gravity, coll, Assets.get_image("box")))
 
     global balloons
     balloons = [
-        Balloon(368, 80, gravity, coll, Assets.get_image("balloon")),
     ]
 
 def load_assets():
     player.load_assets()
-    Assets.new_image("bg", "images/level_2.png")
+    Assets.new_image("bg", "images/level_3.png")
     Assets.new_image("btn_down", "images/button_ui_down.png")
     Assets.new_image("btn_up", "images/button_ui_up.png")
     Assets.new_image("box", "images/box.png")
@@ -85,7 +82,7 @@ def load_assets():
 
     Assets.new_font("font", "fonts/font.ttf", 20)
 
-async def Level_2(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
+async def Level_3(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
     print("Level 2")
     global btn_image
     reset()
@@ -107,7 +104,7 @@ async def Level_2(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
         num = update(dt, events)
         render(screen)
 
-        if num != None: return num, LEVEL_2
+        if num != None: return num, LEVEL_3
 
         await asyncio.sleep(0)
 
@@ -148,7 +145,7 @@ def update(dt:float, events):
     for balloon in balloons:
         balloon.update(dt, events)
 
-    if player.rect().colliderect(goal): return LEVEL_3
+    if player.rect().colliderect(goal): print("win")
 
     if Keys.is_pressed(Keys.space, events) and player.on_floor: change_gravity()
     return num

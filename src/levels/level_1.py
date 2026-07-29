@@ -77,7 +77,7 @@ def create_objs():
     ]
 
     global text
-    text = Text(Assets.get_font("font"), "Pressing 'c' changes gravity (and the balloons hurt)", "white", 12, 16, 0)
+    text = Text(Assets.get_font("font"), "Pressing 'space' changes gravity", "white", 12, 16, 0)
 
 def load_assets():
     player.load_assets()
@@ -158,7 +158,7 @@ def update(dt:float, events):
 
     if player.rect().colliderect(goal): return LEVEL_2
 
-    if Keys.is_pressed(Keys.c, events) and player.on_floor: change_gravity()
+    if Keys.is_pressed(Keys.space, events) and player.on_floor: change_gravity()
     return num
 
 def render(screen:pygame.Surface):

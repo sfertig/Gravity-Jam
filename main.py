@@ -9,6 +9,7 @@ from src.title_screen import Title_Screen
 from src.death_screen import Death_Screen
 from src.levels.level_1 import Level_1
 from src.levels.level_2 import Level_2
+from src.levels.level_3 import Level_3
 
 pygame.init()
 
@@ -30,7 +31,7 @@ async def main():
 
     clock = pygame.time.Clock()
     
-    state = LEVEL_2
+    state = LEVEL_3
     level = LEVEL_1
     while True:
         if state == TITLE_SCREEN: state = await Title_Screen(screen, clock)
@@ -38,10 +39,10 @@ async def main():
         elif state == DEATH_SCREEN: state = await Death_Screen(screen, clock, level)
         elif state == LEVEL_1: 
             state, level = await Level_1(screen, clock)
-            Assets._clear(_confirm=True)
         elif state == LEVEL_2: 
             state, level = await Level_2(screen, clock)
-            Assets._clear(_confirm=True)
+        elif state == LEVEL_3:
+            state, level = await Level_3(screen, clock)
     pygame.quit()
 
 asyncio.run(main())
