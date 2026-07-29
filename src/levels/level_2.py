@@ -17,7 +17,7 @@ FPS = 60
 gravity = 130.0
 
 bg_color = "blue"
-coll = Collisions(16, "data/level_1_collisions.json", False)
+coll = Collisions(16, "data/level_2_collisions.json", False)
 
 goal = pygame.Rect(592, 16, 32, 32)
 
@@ -25,8 +25,6 @@ player = Player(16, 16, gravity, coll)
 
 boxes: list[Box] = []
 balloons: list[Balloon] = []
-
-text: Text = None
 
 btn_image: pygame.Surface
 btn_image_pos = Vector2D(0, 0)
@@ -41,7 +39,6 @@ def reset():
     global player
     global boxes
     global balloons
-    global text
     global btn_image
     global btn_image_pos
     dt = 0.0
@@ -50,7 +47,7 @@ def reset():
     gravity = 130.0
 
     bg_color = "blue"
-    coll = Collisions(16, "data/level_1_collisions.json", False)
+    coll = Collisions(16, "data/level_2_collisions.json", False)
 
     goal = pygame.Rect(592, 16, 32, 32)
 
@@ -76,8 +73,6 @@ def create_objs():
         Balloon(368, 80, gravity, coll, Assets.get_image("balloon")),
     ]
 
-    global text
-    text = Text(Assets.get_font("font"), "Pressing 'c' changes gravity (and the balloons hurt)", "white", 12, 16, 0)
 
 def load_assets():
     player.load_assets()
@@ -90,10 +85,8 @@ def load_assets():
 
     Assets.new_font("font", "fonts/font.ttf", 20)
 
-
-
-
-async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
+async def Level_2(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
+    print("Level 2")
     global btn_image
     reset()
     load_assets()
@@ -114,7 +107,7 @@ async def Level_1(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
         num = update(dt, events)
         render(screen)
 
-        if num != None: return num, LEVEL_1
+        if num != None: return num, LEVEL_2
 
         await asyncio.sleep(0)
 
@@ -156,7 +149,7 @@ def update(dt:float, events):
     for balloon in balloons:
         balloon.update(dt, events)
 
-    if player.rect().colliderect(goal): return LEVEL_2
+    if player.rect().colliderect(goal): print("win")
 
     if Keys.is_pressed(Keys.c, events) and player.on_floor: change_gravity()
     return num
@@ -175,8 +168,6 @@ def render(screen:pygame.Surface):
         balloon.render(screen)
 
     coll.render(screen)
-
-    text.render(screen)
 
     pygame.draw.rect(screen, "green", goal, 1)
 
