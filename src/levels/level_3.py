@@ -65,10 +65,14 @@ def reset():
 def create_objs():
     global boxes
     boxes = [
+        Box(64, 16, gravity, coll, Assets.get_image("box")),
     ]
+    for x in range(16, 64, 16):
+        boxes.append(Box(x, 208, gravity, coll, Assets.get_image("box")))
 
     global balloons
     balloons = [
+        Balloon(80, 16, gravity, coll, Assets.get_image("balloon")),
     ]
 
 def load_assets():
