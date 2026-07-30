@@ -62,10 +62,8 @@ async def Death_Screen(screen:pygame.Surface, clock:pygame.time.Clock, level_cod
             if event.type == pygame.QUIT: return SHUT_DOWN
 
         if Keys.is_held(Keys.escape): 
-            print("escape")
             return TITLE_SCREEN
         if Keys.is_held(Keys.enter): 
-            print("enter")
             return level_code
 
         dt = clock.tick(FPS)//1000

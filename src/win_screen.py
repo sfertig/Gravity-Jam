@@ -21,7 +21,7 @@ async def Win_Screen(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
             if event.type == pygame.QUIT: return SHUT_DOWN
 
         if Keys.is_pressed(Keys.escape, events): return SHUT_DOWN
-        if Keys.is_pressed(Keys.enter, events): return LEVEL_1
+        if Keys.is_pressed(Keys.enter, events): return TITLE_SCREEN
 
         dt = clock.tick(FPS)//1000
         update(dt)
