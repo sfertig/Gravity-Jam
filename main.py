@@ -37,6 +37,7 @@ async def main():
     state = LEVEL_3
     level = LEVEL_1
     while True:
+        print(state, level)
         if state == TITLE_SCREEN: state = await Title_Screen(screen, clock)
         elif state == SHUT_DOWN: break
         elif state == DEATH_SCREEN: state = await Death_Screen(screen, clock, level)

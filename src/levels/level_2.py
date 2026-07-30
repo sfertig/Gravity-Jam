@@ -86,7 +86,6 @@ def load_assets():
     Assets.new_font("font", "fonts/font.ttf", 20)
 
 async def Level_2(screen:pygame.Surface, clock:pygame.time.Clock) -> int:
-    print("Level 2")
     global btn_image
     reset()
     load_assets()

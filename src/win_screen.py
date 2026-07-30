@@ -34,11 +34,9 @@ def update(dt:float):
     for event in events:
         if event.type == pygame.QUIT: return SHUT_DOWN
     if Keys.is_pressed(Keys.enter, events): 
-        print("enter")
         return TITLE_SCREEN
 
 def render(screen:pygame.Surface, img, text, info):
-    print("render")
     screen.fill(bg_color)
     #renders
     screen.blit(img, (0, 0))

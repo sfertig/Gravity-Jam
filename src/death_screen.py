@@ -48,6 +48,7 @@ text: list[Text] = []
 
 async def Death_Screen(screen:pygame.Surface, clock:pygame.time.Clock, level_code:int) -> int:
     global text
+    if level_code != (LEVEL_1 or LEVEL_2 or LEVEL_3): level_code = LEVEL_1
 
     text = [
         Text(Assets.get_font("font"), choice(quotes), (201, 159, 159), 12, 16, 0),
@@ -60,8 +61,12 @@ async def Death_Screen(screen:pygame.Surface, clock:pygame.time.Clock, level_cod
         for event in events:
             if event.type == pygame.QUIT: return SHUT_DOWN
 
-        if Keys.is_pressed(Keys.escape, events): return TITLE_SCREEN
-        if Keys.is_pressed(Keys.enter, events): return level_code
+        if Keys.is_held(Keys.escape): 
+            print("escape")
+            return TITLE_SCREEN
+        if Keys.is_held(Keys.enter): 
+            print("enter")
+            return level_code
 
         dt = clock.tick(FPS)//1000
         update(dt)
